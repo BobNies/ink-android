@@ -8,7 +8,7 @@ A light-weight, customizable view for capturing a signature or drawing in an And
 
 To import the Android SDK, include it as a dependency in your build.gradle file
 ```groovy
-compile 'com.simplify:ink:X.X.X'
+implementation 'com.github.BobNies:ink-android:2.0.0'
 ```
 
 ## Usage
