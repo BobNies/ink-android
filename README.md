@@ -4,11 +4,9 @@ A light-weight, customizable view for capturing a signature or drawing in an And
 
 ![screenshot](./screenshot.png)
 
-## Import the Dependency [ ![Download](https://api.bintray.com/packages/simplify/Android/simplify-ink-android/images/download.svg) ](https://bintray.com/simplify/Android/simplify-ink-android/_latestVersion)
-
 To import the Android SDK, include it as a dependency in your build.gradle file
 ```groovy
-compile 'com.simplify:ink:X.X.X'
+implementation 'com.github.BobNies:ink-android:2.0.0'
 ```
 
 ## Usage
