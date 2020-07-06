@@ -34,12 +34,11 @@ class InkView : View {
     private var mMaxStrokeWidth = 0f
     private var mMinStrokeWidth = 0f
     private var mSmoothingRatio = 0f
+
     // points
     private var pointQueue = ArrayList<InkPoint>()
     private var pointRecycle = ArrayList<InkPoint>()
-    //--------------------------------------
-// Util
-//--------------------------------------
+
     // misc
     var density = 0f
     private var mBitmap: Bitmap? = null
@@ -47,11 +46,7 @@ class InkView : View {
     private lateinit var paint: Paint
     private lateinit var dirty: RectF
     private var listeners = ArrayList<InkListener>()
-    /**
-     * Checks if the view is empty
-     *
-     * @return True of False
-     */
+
     var isViewEmpty = false
         private set
 
@@ -69,7 +64,7 @@ class InkView : View {
         init(flags)
     }
 
-    private fun init(flags: Int) { // init flags
+    private fun init(flags: Int) {
         setFlags(flags)
         // init screen density
         val metrics = resources.displayMetrics
@@ -563,24 +558,29 @@ class InkView : View {
          * Will be used as the standard stroke width if FLAG_RESPONSIVE_WIDTH is removed
          */
         const val DEFAULT_MAX_STROKE_WIDTH = 5f
+
         /**
          * The default minimum stroke width (dp)
          */
         const val DEFAULT_MIN_STROKE_WIDTH = 1.5f
+
         /**
          * The default smoothing ratio for calculating the control points for the bezier curves.
          * Will be ignored if FLAG_INTERPOLATION is removed
          */
         const val DEFAULT_SMOOTHING_RATIO = 0.75f
+
         /**
          * When this flag is added, paths will be drawn as cubic-bezier curves
          */
         const val FLAG_INTERPOLATION = 1
+
         /**
          * When present, the width of the paths will be responsive to the velocity of the stroke.
          * When missing, the width of the path will be the the max stroke width
          */
         const val FLAG_RESPONSIVE_WIDTH = 1 shl 1
+
         /**
          * When present, the data points for the path are drawn with their respective control points
          *
