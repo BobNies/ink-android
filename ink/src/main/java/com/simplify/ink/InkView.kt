@@ -84,8 +84,8 @@ class InkView : View {
     }
 
     //--------------------------------------
-// Events
-//--------------------------------------
+    // Events
+    //--------------------------------------
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         clear()
@@ -127,8 +127,8 @@ class InkView : View {
         super.onDraw(canvas)
     }
     //--------------------------------------
-// Public Methods
-//--------------------------------------
+    // Public Methods
+    //--------------------------------------
     /**
      * Sets the feature flags for the view. This will overwrite any previously set flag
      *
@@ -325,8 +325,8 @@ class InkView : View {
         invalidate()
     }
     //--------------------------------------
-// Listener Interfaces
-//--------------------------------------
+    // Listener Interfaces
+    //--------------------------------------
     /**
      * Listener for the ink view to notify on actions
      */
@@ -404,7 +404,7 @@ class InkView : View {
         dirty.bottom = max(p1.y, p2.y)
         paint.style = Paint.Style.STROKE
         // adjust low-pass ratio from changing acceleration
-// using comfortable range of 0.2 -> 0.3 approx.
+        // using comfortable range of 0.2 -> 0.3 approx.
         val acceleration = abs((p2.velocity - p1.velocity) / (p2.time - p1.time)) // in/s^2
         val filterRatio = min(FILTER_RATIO_MIN + FILTER_RATIO_ACCELERATION_MODIFIER * acceleration / THRESHOLD_ACCELERATION, 1f)
         // compute new stroke width
@@ -463,12 +463,11 @@ class InkView : View {
             paint.strokeWidth = endWidth
         }
         invalidate()
-        //invalidate((dirty.left - mMaxStrokeWidth / 2).toInt(), (dirty.top - mMaxStrokeWidth / 2).toInt(), (dirty.right + mMaxStrokeWidth / 2).toInt(), (dirty.bottom + mMaxStrokeWidth / 2).toInt())
     }
 
     //--------------------------------------
-// Util Classes
-//--------------------------------------
+    // Util Classes
+    //--------------------------------------
     inner class InkPoint(x: Float, y: Float, time: Long) {
         var x = 0f
         var y = 0f
