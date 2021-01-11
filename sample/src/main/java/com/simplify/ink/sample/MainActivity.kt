@@ -41,25 +41,25 @@ class MainActivity : Activity() {
         val menu = binding.toolbar.menu
         menuInflater.inflate(R.menu.options, menu)
         var menuItem = menu.findItem(R.id.menu_interpolation)
-        menuItem.isChecked = binding.ink.hasFlag(InkView.FLAG_INTERPOLATION)
+        menuItem.isChecked = binding.ink.hasFlag(InkView.INTERPOLATION)
         menuItem.setOnMenuItemClickListener { item ->
             item.isChecked = !item.isChecked
             if (item.isChecked) {
-                binding.ink.addFlag(InkView.FLAG_INTERPOLATION)
+                binding.ink.addFlag(InkView.INTERPOLATION)
             } else {
-                binding.ink.removeFlag(InkView.FLAG_INTERPOLATION)
+                binding.ink.removeFlag(InkView.INTERPOLATION)
             }
             true
         }
 
         menuItem = menu.findItem(R.id.menu_responsive)
-        menuItem.isChecked = binding.ink.hasFlag(InkView.FLAG_RESPONSIVE_WIDTH)
+        menuItem.isChecked = binding.ink.hasFlag(InkView.VELOCITY)
         menuItem.setOnMenuItemClickListener { item ->
             item.isChecked = !item.isChecked
             if (item.isChecked) {
-                binding.ink.addFlag(InkView.FLAG_RESPONSIVE_WIDTH)
+                binding.ink.addFlag(InkView.VELOCITY)
             } else {
-                binding.ink.removeFlag(InkView.FLAG_RESPONSIVE_WIDTH)
+                binding.ink.removeFlag(InkView.VELOCITY)
             }
             true
         }
@@ -67,7 +67,7 @@ class MainActivity : Activity() {
         menuItem = menu.findItem(R.id.menu_clear)
         menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
         menuItem.setOnMenuItemClickListener {
-            binding.ink.clear()
+            binding.ink.clearCanvas()
             true
         }
     }

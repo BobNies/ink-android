@@ -59,7 +59,7 @@ class InkView : View {
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int = 0) : super(context, attrs, defStyleAttr) {
         // get flags from attributes
         val a = getContext().obtainStyledAttributes(attrs, R.styleable.InkView, defStyleAttr, 0)
-        val flags = a.getInt(R.styleable.InkView_inkFlags, DEFAULT_FLAGS)
+        val flags = a.getInt(R.styleable.InkView_featureFlags, DEFAULT_FLAGS)
         a.recycle()
         init(flags)
     }
@@ -88,7 +88,7 @@ class InkView : View {
     //--------------------------------------
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        clear()
+        clearCanvas()
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -271,6 +271,14 @@ class InkView : View {
      * Clears the view
      */
     fun clear() {
+        invalidate()
+        isViewEmpty = true
+    }
+
+    /**
+     * Clears the view
+     */
+    fun clearCanvas() {
         mBitmap?.recycle()
         // init bitmap cache
         mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
@@ -343,7 +351,7 @@ class InkView : View {
         fun onInkDraw()
     }
 
-    fun addPoint(p: InkPoint) {
+    private fun addPoint(p: InkPoint) {
         pointQueue.add(p)
         when (pointQueue.size) {
             1 -> { // compute starting velocity
@@ -378,26 +386,26 @@ class InkView : View {
         }
     }
 
-    fun getRecycledPoint(x: Float, y: Float, time: Long): InkPoint {
+    private fun getRecycledPoint(x: Float, y: Float, time: Long): InkPoint {
         return if (pointRecycle.size == 0) {
             InkPoint(x, y, time)
         } else pointRecycle.removeAt(0).reset(x, y, time)
     }
 
-    fun computeStrokeWidth(velocity: Float): Float { // compute responsive width
-        return if (hasFlags(FLAG_RESPONSIVE_WIDTH)) {
+    private fun computeStrokeWidth(velocity: Float): Float { // compute responsive width
+        return if (hasFlags(VELOCITY)) {
             mMaxStrokeWidth - (mMaxStrokeWidth - mMinStrokeWidth) * min(velocity / THRESHOLD_VELOCITY, 1f)
         } else mMaxStrokeWidth
     }
 
-    fun draw(p: InkPoint) {
+    private fun draw(p: InkPoint) {
         paint.style = Paint.Style.FILL
         // draw dot
         canvas?.drawCircle(p.x, p.y, paint.strokeWidth / 2f, paint)
         invalidate()
     }
 
-    fun draw(p1: InkPoint, p2: InkPoint) { // init dirty rect
+    private fun draw(p1: InkPoint, p2: InkPoint) { // init dirty rect
         dirty.left = min(p1.x, p2.x)
         dirty.right = max(p1.x, p2.x)
         dirty.top = min(p1.y, p2.y)
@@ -413,7 +421,7 @@ class InkView : View {
         val endWidth = filterRatio * desiredWidth + (1f - filterRatio) * startWidth
         val deltaWidth = endWidth - startWidth
         // interpolate bezier curve
-        if (hasFlags(FLAG_INTERPOLATION)) { // compute # of steps to interpolate in the bezier curve
+        if (hasFlags(INTERPOLATION)) { // compute # of steps to interpolate in the bezier curve
             val steps = (sqrt((p2.x - p1.x.toDouble()).pow(2.0) + (p2.y - p1.y.toDouble()).pow(2.0)) / 5).toInt()
             // computational setup for differentials used to interpolate the bezier curve
             val u = 1f / (steps + 1)
@@ -493,7 +501,7 @@ class InkView : View {
             return this.x == x && this.y == y
         }
 
-        fun distanceTo(p: InkPoint): Float {
+        private fun distanceTo(p: InkPoint): Float {
             val dx = p.x - x
             val dy = p.y - y
             return sqrt(dx * dx + dy * dy.toDouble()).toFloat()
@@ -572,13 +580,13 @@ class InkView : View {
         /**
          * When this flag is added, paths will be drawn as cubic-bezier curves
          */
-        const val FLAG_INTERPOLATION = 1
+        const val INTERPOLATION = 1
 
         /**
          * When present, the width of the paths will be responsive to the velocity of the stroke.
          * When missing, the width of the path will be the the max stroke width
          */
-        const val FLAG_RESPONSIVE_WIDTH = 1 shl 1
+        const val VELOCITY = 1 shl 1
 
         /**
          * When present, the data points for the path are drawn with their respective control points
@@ -589,7 +597,7 @@ class InkView : View {
         const val THRESHOLD_ACCELERATION = 3f // in/s^2
         const val FILTER_RATIO_MIN = 0.22f
         const val FILTER_RATIO_ACCELERATION_MODIFIER = 0.1f
-        const val DEFAULT_FLAGS = FLAG_INTERPOLATION or FLAG_RESPONSIVE_WIDTH
+        const val DEFAULT_FLAGS = INTERPOLATION or VELOCITY
         const val DEFAULT_STROKE_COLOR = -0x1000000
     }
 }

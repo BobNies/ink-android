@@ -38,7 +38,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ink"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:inkFlags="interpolation|responsiveWeight"/>
+    app:inkFlags="interpolation|velocity"/>
 ```
 
 or by setting the flags manually in code:
